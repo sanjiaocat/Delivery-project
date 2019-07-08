@@ -1,0 +1,144 @@
+
+路由组件：
+    想要进行渲染显示，需要在路由器中配置，注册。在跳转到设置的相应路径时进行显示。
+
+ 普通组件
+    想要渲染显示，需在app或者相应组件的script中   commponent进行注册，直接就可以进行渲染显示。
+
+强制绑定方法：
+    ：class = ‘{on：a}’ 和   ：class=‘a’   可以有两种方式，1、普通变量 和2、对象方式。
+    使用区别：    当需要传入的类名不确定时 需要用1、普通变量的方式。
+                    当类名已经确定了， 只是判断生效或者不生效时使用2、2对象方式  。
+
+ route路由与router路由器
+    当路由器在main.中注册后，需要在router中index文件配置注册路由组件，而每个注册过的路由组件都会
+    获得$router和$route两个属性   区别：
+        1、$router中存储的时一个个方法，可以进行路由间的跳转  如this.$router.push()                        
+        2、 $route中则存储了传过来的数据  如路由地址：this.$route.path  参数传递存储：this.$route.params.
+
+全局组件
+    如果一个组件在每个路由组件跳转时都要显示，就把他直接注册成全剧组件 ， 在mian.js中注册vue.commponent('a',a);
+
+轮播图：
+        在vue中使用swiper轮播图 ，需要在页面初始化之后在使用，否则没有效果。
+        可以利用mounted（）{}声明周期内调用。也可以用后面的方法。
+
+vuex 映射方法：
+    在其他组件中想要获取vuex中state中的状态数据，需要在当前组件中：
+    1、引入vuex中的mapStste  const {mapState} from 'Vuex‘
+    2、在组件计算属性computed 中 使用...mapState('数据名')
+    3、直接可以在模板中动态的使用数据了。   
+
+组件调用vuex中的方法：
+    组件想要调用vuex中actions中间接修改state的状态数据的方法。
+    this.$store.dispatch('方法名',data);
+    注意：dispatch的返回值时一个promise对象。
+
+props：
+    父组件向子组件通过组件标签进行参数传递。
+    子组件通过props进行接受   props：['参数名']  或者props：{参数名：}
+
+vue脚手架运行：
+    如果pack.json中有start就可以用npm start或者 yarn start命令启动。
+    没有可以使用  npm run serve
+
+template中的数据显示：
+    显示的数据来源  三个直接来源：   
+    1、vue中data数据（可以从vuex中state获取）。     2、计算属性computed 中（通过指令进行绑定进行动态显示。）
+    3、props中（接受父组件的参数传递。）   
+
+接口文档：
+    1、请求地址.url
+    2、请求方式  如get/post
+    3、请求参数   （发送请求时参数名不能错误。）   
+    4、返回值    （动态的显示。）  
+ 
+
+标签隐藏：
+        方法               区别          性能
+    1、display  none      不占位       重绘+重排     3
+    2、visibility  hidden  占位        重绘          2
+    3、opacity    0        占位        重绘          1
+
+axios请求库：
+             
+    语法：    简写：   axios.get(url,{ params:{ 参数名：参数值} })
+           axios({
+                    method: 'get',
+                    url: 'http://bit.ly/2mTM3nY',
+                    responseType: 'stream'
+                   })
+   简写： axios.post(url,{参数名：参数值})
+
+     axios({
+                method:'post',    //请求方式
+                url:'',            //请求地址
+                data:{  firstName: 'Fred',      //请求参数
+                        lastName: 'Flintstone'}
+            })
+    如果参数以对象的形式传递，就为json格式，如果后台不解析json格式，就前端需要单独设置。
+    axios请求的返回值为promise对象。
+
+vue 中跨域解决：      代理配置
+    需要在config文件中的index文件配置如下文件：
+     proxyTable: {
+      '/api': {           // 匹配所有请求以 '/api'开头的请求路径      只用作匹配需要代理的路径使用
+      target: 'http://localhost:3000',     // 代理目标的基础路径    
+      changeOrigin: true, // 支持跨域
+      pathRewrite: {           // 重写路径: 去掉路径中开头的'/api'
+        '^/api': ''           //在请求发出前会重写api前缀
+      }
+    }
+    }
+    这个方法在向多个服务器发送请求时，只需要在下面继续配置一个就好。webpack中也有方法可以查看文档。
+
+根据一维数组生成二维数组：
+
+    1、先创建一个大数组，    2、创建一个小数组并设置最大长度     3、遍历数组的每一项存储到小数组中。
+    4、将小数组存储到大数组中。
+
+ 多页每页固定数量的轮播图实现步骤：
+        利用二维数组的方式进行实现：
+        1、创建一个大数组 big     2、创建一个先数组    3、获取要显示在轮播图上的数据数组
+        4、foreach方法遍历数组    5、判断小数组是不是空数组 （是的话添加到大数组中）
+        6、添加遍历的数据到大数组中的小数组中      7、判断  大数组中的先数组长度是否达到限制
+        8、达到限制就重新建立一个小数组继续添加数据。   9、利用v-for循环大数组去实现轮播的页数
+        10、v-for  大数组里面的每一项小数组   获得每一页的列表项。    
+        如此循环就会由一位数组转换为二维数组 
+
+$nextTick(callback):
+    使用：   在dom页面更新之后执行回调函数。
+        使用条件  ：需在更新数据之后。   （所以配合监视 watch使用）     
+
+vue 中轮播图不轮播解决方法：
+    原因：  由于网络或者页面加载较慢，有时轮播图运行较早会出现不能轮播的情况
+    （解决 ：在页面更新之后在启动轮播图。
+    方法1 、  watch（监视）  +   $nextTick(callback)
+    方法 2： 利用 dispatch ()返回的epromise对象   在await后执行轮播图  或者.then 方法也可以
+
+
+返回拦截器  ：
+    可用于将返回的值加工，得到最后我们想要的值。 如下返回 return response.data
+        axios.interceptors.response.use((response)=>{
+        return response.data
+        })
+
+
+请求拦截器
+        ：；用于对发送的请求加工和处理  如下：  是引用qs模块将请求参数 默认的json格式转换为unlcode格式
+        否则后台可能比解析json格式数据
+        。
+    axios.interceptors.request.use((config)=>{
+    const {data,method} = config;
+    if(method.toLowerCase() === 'post'&& data){
+        
+        config.data = qs.stringify(data)
+    }
+    return config
+    })
+
+
+vue中@1一个结果的值根据另外一个结果@2的值变化来确定：
+        一般是@2值放在data数据里面 通过双向绑定时时进行获取 v-model，@1放在计算属性里面 当@2的值符合规则时
+         就把相应的状态值给到@1.
+   
